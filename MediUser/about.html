@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About • EasyMeds</title>
+  <meta name="description" content="Learn about SafeMedss—our mission, quality standards, and the team behind the medicine finder and buying experience." />
+  <link rel="stylesheet" href="about.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>:root{
+  --bg: #0b1020;
+  --panel: #11162a;
+  --muted: #94a3b8;
+  --text: #e6e9ef;
+  --brand: #5b8cff;
+  --brand-2: #22d3ee;
+  --ring: #2b3b6b;
+  --card: #0e1428;
+  --ok: #10b981;
+  --shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color:var(--text);
+  background: radial-gradient(1200px 600px at 10% -10%, rgba(34,211,238,.15), transparent 50%),
+              radial-gradient(1200px 600px at 90% -10%, rgba(91,140,255,.15), transparent 50%),
+              var(--bg);
+  line-height:1.6;
+}
+
+/* Layout */
+.container{width:min(1120px, 92%); margin-inline:auto}
+.site-header{position:sticky; top:0; backdrop-filter:saturate(150%) blur(10px); background:rgba(11,16,32,.7); border-bottom:1px solid rgba(255,255,255,.06); z-index:20}
+.nav{display:flex; align-items:center; justify-content:space-between; padding:.9rem 0}
+.brand{display:flex; align-items:center; gap:.6rem; text-decoration:none; color:var(--text); font-weight:700; letter-spacing:.2px}
+.brand .logo{display:inline-grid; place-items:center; width:32px;height:32px; border-radius:10px; background:linear-gradient(135deg, var(--brand), var(--brand-2)); box-shadow: var(--shadow)}
+.nav-links{display:flex; gap:1rem}
+.nav-links a{color:var(--muted); text-decoration:none; font-weight:600; padding:.45rem .7rem; border-radius:.6rem}
+.nav-links a:hover{color:var(--text); background:rgba(255,255,255,.04)}
+.nav-links .active{color:var(--text); background:rgba(91,140,255,.12); border:1px solid rgba(91,140,255,.25)}
+
+/* Hero */
+.hero{position:relative; overflow:hidden}
+.hero-inner{padding:4rem 0 2rem}
+.breadcrumbs{display:flex; gap:.5rem; color:var(--muted); font-size:.9rem}
+.breadcrumbs a{color:var(--muted); text-decoration:none}
+.hero h1{font-size:clamp(2rem, 3.2vw + 1rem, 3.25rem); line-height:1.1; margin:1rem 0 1rem; font-weight:800; letter-spacing:.2px}
+.lead{font-size:1.06rem; color:#c8d2e3; max-width:70ch}
+.stats{display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:1rem; margin:1.8rem 0 0}
+.stat{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.08); padding:1rem; border-radius:1rem; text-align:center}
+.stat .num{font-weight:800; font-size:1.8rem}
+.stat .label{color:var(--muted); font-size:.9rem}
+.hero-shape{position:absolute; inset:auto -15% -30% -15%; height:240px; background:
+  radial-gradient(60% 100% at 50% 0%, rgba(91,140,255,.18), transparent 70%),
+  radial-gradient(60% 100% at 50% 100%, rgba(34,211,238,.12), transparent 70%);
+  filter:blur(40px); pointer-events:none}
+
+/* Trust bar */
+.trust{border-top:1px solid rgba(255,255,255,.06); border-bottom:1px solid rgba(255,255,255,.06); background:rgba(255,255,255,.02)}
+.trust-inner{display:flex; flex-wrap:wrap; gap:1rem 2rem; align-items:center; justify-content:center; padding:1rem 0; color:var(--muted); font-weight:600}
+.trust-inner ul{display:flex; gap:1.2rem; list-style:none; padding:0; margin:0}
+.trust-inner li{opacity:.9}
+
+/* Split section */
+.split{padding:3rem 0}
+.grid-2{display:grid; gap:1.25rem; grid-template-columns: repeat(2, minmax(0,1fr))}
+.card{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:1.2rem; padding:1.4rem; box-shadow: var(--shadow)}
+.card h2{margin:0 0 .6rem; font-size:1.6rem}
+.checklist{margin:1rem 0 0; padding:0; list-style:none}
+.checklist li{padding-left:1.6rem; position:relative; margin:.4rem 0; color:#cfe3ff}
+.checklist li::before{content:"✔"; position:absolute; left:.2rem; color:var(--ok)}
+.timeline{display:grid; gap:.5rem; margin-top:1rem}
+.timeline div{display:flex; gap:.6rem; align-items:center}
+.timeline span{display:inline-flex; align-items:center; justify-content:center; min-width:64px; padding:.2rem .6rem; border-radius:.6rem; background:#0b1532; border:1px solid rgba(255,255,255,.08); color:#bcd0ff; font-weight:700}
+
+/* How it works */
+.hiw{padding:2rem 0 1rem}
+.hiw h2{text-align:center; font-size:1.8rem; margin:0 0 1.2rem}
+.steps{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:1rem}
+.step{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.08); padding:1.1rem; border-radius:1rem}
+.step-num{width:34px;height:34px; border-radius:.6rem; display:grid; place-items:center; font-weight:800; border:1px solid rgba(91,140,255,.35); background:rgba(91,140,255,.14); margin-bottom:.5rem}
+
+/* Quality */
+.quality{padding:2rem 0}
+.grid-3{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:1rem}
+.q-card{background:var(--card); border:1px solid rgba(255,255,255,.06); border-radius:1rem; padding:1.1rem}
+
+/* Team */
+.team{padding:2rem 0}
+.team h2{text-align:center; margin:0 0 1.2rem}
+.team-grid{display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap:1rem}
+.member{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03)); border:1px solid rgba(255,255,255,.08); padding:1rem; border-radius:1rem; text-align:center}
+.member img{width:110px;height:110px; border-radius:1rem; object-fit:cover; display:block; margin:0 auto .6rem; border:1px solid rgba(255,255,255,.12) }
+.member h3{margin:.2rem 0 .2rem; font-size:1.05rem}
+.member .role{color:var(--muted); font-weight:600; font-size:.9rem}
+
+/* FAQ */
+.faq{padding:2rem 0}
+.faq h2{margin:0 0 1rem; text-align:center}
+details{background:var(--panel); border:1px solid rgba(255,255,255,.06); border-radius:.8rem; padding:.9rem 1rem; margin:.6rem 0}
+details:hover{border-color:rgba(91,140,255,.35)}
+summary{cursor:pointer; font-weight:700; list-style:none}
+summary::-webkit-details-marker{display:none}
+details p{color:#cbd5e1; margin:.6rem 0 0}
+
+/* CTA */
+.cta{padding:2.5rem 0 3rem}
+.cta-inner{display:grid; place-items:center; text-align:center; gap:.6rem; background:linear-gradient(135deg, rgba(91,140,255,.18), rgba(34,211,238,.18)); border:1px solid rgba(255,255,255,.14); border-radius:1.2rem; padding:2rem}
+.btn{display:inline-block; text-decoration:none; color:#0b1020; background:#fff; padding:.7rem 1rem; font-weight:800; border-radius:.8rem; box-shadow: var(--shadow)}
+.btn:hover{transform:translateY(-1px);}
+
+/* Footer */
+.site-footer{border-top:1px solid rgba(255,255,255,.08); background:rgba(255,255,255,.02)}
+.footer-inner{display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1rem 0; color:var(--muted)}
+.footer-inner a{color:var(--muted); text-decoration:none}
+.footer-inner a:hover{color:var(--text)}
+
+/* Responsive */
+@media (max-width: 980px){
+  .stats{grid-template-columns: repeat(2, 1fr)}
+  .grid-2{grid-template-columns: 1fr}
+  .steps{grid-template-columns: repeat(2, 1fr)}
+  .grid-3{grid-template-columns: 1fr}
+  .team-grid{grid-template-columns: repeat(2, 1fr)}
+}
+@media (max-width: 560px){
+  .nav{flex-wrap:wrap; gap:.6rem}
+  .nav-links{width:100%; justify-content:space-between}
+  .stats{grid-template-columns: 1fr 1fr}
+  .steps{grid-template-columns: 1fr}
+  .team-grid{grid-template-columns: 1fr}
+}
+</style>
+</head>
+<body>
+  <!-- Header -->
+
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-inner">
+      <div class="breadcrumbs" aria-label="Breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <span aria-current="page">About</span>
+      </div>
+      <h1>We make self-care and medicines safer, clearer, and closer to you.</h1>
+      <p class="lead">
+        EasyMeds helps people understand conditions, compare medicines, check side-effects and
+        discover trusted purchase options—backed by verified sources and pharmacist review.
+      </p>
+        <div class="stat">
+          <div class="num">99.9%</div>
+          <div class="label">Uptime</div>
+        </div>
+        <div class="stat">
+          <div class="num">24×7</div>
+          <div class="label">Support</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-shape" aria-hidden="true"></div>
+  </section>
+
+  <!-- Mission & Story -->
+  <section class="split">
+    <div class="container grid-2">
+      <div class="card">
+        <h2>Our Mission</h2>
+        <p>
+          Put safe, comprehensible medical information in everyone’s pocket—so decisions about
+          symptoms, medicines.
+        </p>
+        <ul class="checklist">
+          <li>Plain-language explainer pages</li>
+          <li>Context on side-effects & interactions</li>
+          <li>Clear next steps & where to buy</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h2>Our Story</h2>
+        <p>
+          We started EasyMeds after seeing friends struggle to interpret complex leaflets and
+          scattered advice online. Today, our team blends engineering, design, and pharmacy to
+          deliver a single, trusted place for self-care decisions.
+        </p>
+        <div class="timeline">
+          <div><span>2023</span> Prototype launched</div>
+          <div><span>2024</span> 25K medicines added</div>
+          <div><span>2025</span> Verified seller network</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="hiw">
+    <div class="container">
+      <h2>How EasyMeds Works</h2>
+      <div class="steps">
+        <article class="step">
+          <div class="step-num">1</div>
+          <h3>Search</h3>
+          <p>Type a condition or medicine. We normalize brand/generic names and show matches.</p>
+        </article>
+        <article class="step">
+          <div class="step-num">2</div>
+          <h3>Understand</h3>
+          <p>Read pharmacist-reviewed info on uses, dosage, side-effects, and home remedies.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+  <!-- Team -->
+  <section class="team">
+    <div class="container">
+      <h2>Meet our team</h2>
+      <div class="team-grid">
+        <article class="member">
+          <img src="/Aditya Raj img .jpg" alt="Photo of Aditya Raj" />
+          <h3>Aditya Raj</h3>
+          <p class="role">Team Leader</p>
+        </article>
+        <article class="member">
+          <img src="/Krishna Kumar img.jpeg" alt="Photo of Krishna Kumar" />
+          <h3>Krishna Kumar</h3>
+          <p class="role">Team Partner</p>
+        </article>
+        <article class="member">
+          <img src="/Vrushti Patel img.jpg" alt="Photo of Vrusti Patel" />
+          <h3>Vrusti Patel</h3>
+          <p class="role">Team Representative</p>
+        </article>
+        <article class="member">
+          <img src="/Aditya Patel img.jpg" alt="Photo of Aditya Patel" />
+          <h3>Aditya Patel</h3>
+          <p class="role">Team Partner</p>
+        </article>
+         </article>
+        <article class="member">
+          <img src="/Shubham Kumar img.jpg" alt="Photo of Shubham Kumar" />
+          <h3>Shubham Kumar</h3>
+          <p class="role">Team Partner</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="container">
+      <h2>FAQs</h2>
+      <details>
+        <summary>Is EasyMeds a pharmacy?</summary>
+        <p>No. We provide information and redirect to verified pharmacies. Always follow your doctor’s advice.</p>
+      </details>
+      <details>
+        <summary>Who writes the medical content?</summary>
+        <p>Our editors draft pages which are then reviewed by licensed pharmacists.</p>
+      </details>
+      <details>
+        <summary>How do you verify sellers?</summary>
+        <p>We verify licenses, shipping, return policies, and customer ratings before listing.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container cta-inner">
+      <h2>Want to partner with us?</h2>
+      <p>Join our verified network of pharmacies, clinics, and health creators.</p>
+      <a class="btn" href="Contact_us.html">Contact us</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>© <span id="year"></span> EasyMeds. For education only. Not medical advice.</p>
+      <nav>
+        <a href="/privacy">Privacy</a>
+        <a href="/terms">Terms</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>

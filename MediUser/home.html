@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EasyMeds</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #0f172a, #1e293b, #0a0a0a);
+      color: white;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
+      backdrop-filter: blur(10px);
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .logo .easy {
+      color: white;
+    }
+
+    .logo .meds {
+      color: #ff0000;
+    }
+
+    .menu-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 25px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .menu-btn div {
+      height: 3px;
+      background: white;
+      border-radius: 2px;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      right: -300px;
+      width: 300px;
+      height: 100vh;
+      background: #1e293b;
+      z-index: 60;
+      transition: right 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+    }
+
+    .sidebar.active {
+      right: 0;
+    }
+
+    .sidebar a {
+      color: white;
+      font-weight: 500;
+      font-size: 1.25rem;
+      margin-bottom: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar a:hover {
+      color: #6366f1;
+      transform: scale(1.05);
+    }
+
+    /* Hero Section */
+    .hero {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      z-index: 1;
+      position: relative;
+      padding-top: 6rem;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      font-weight: 800;
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s forwards 0.2s;
+    }
+
+    .hero h1 .easy {
+      color: white;
+    }
+
+    .hero h1 .meds {
+      color: #ff0000;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      margin-top: 1rem;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 1s forwards 0.5s;
+    }
+
+    .cta-btn {
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: #6366f1;
+      color: white;
+      font-weight: 600;
+      border-radius: 1rem;
+      cursor: pointer;
+      transform: translateY(0);
+      animation: fadeUp 1s forwards 0.8s;
+      transition: all 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .floating-shape {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: floatAnim linear infinite;
+    }
+
+    @keyframes floatAnim {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-20px) rotate(20deg);
+      }
+
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header id="Home">
+    <div class="logo"><span class="easy">Easy</span><span class="meds">Meds</span></div>
+    <div class="menu-btn" id="menuBtn">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </header>
+
+  <!-- Hamburger menu button -->
+  <button class="menu-btn">&#9776;</button>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <button class="close-btn" id="closeBtn">&times;</button>
+    <a href="#Home">Home</a>
+    <a href="Contact_us.html">Contact</a>
+    <a href="latest_news.html">Latest News</a>
+    <a href="about.html">About Us</a>
+  </div>
+
+  
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <a href="#Home">Home</a>
+    <a href="Contact_us.html">Contact</a>
+    <a href="latest_news.html">Latest News</a>
+    <a href="about.html">About Us</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1><span class="easy">Easy</span><span class="meds">Meds</span></h1>
+    <p>Search sickness → find related medicines</p>
+        <p class="mt-4 text-xl font-bold text-red-400">
+      Instantly Check Dangerous Drugs Interaction with AI
+    </p>
+    <p class="mt-2 max-w-2xl text-gray-300 text-base leading-relaxed">
+      EasyMeds empowers patients, caregivers and doctors by flagging AI in
+      diagnostics, fitness, mental health, or decentralised health records –
+      reimagining care in India + verified medical data.
+    </p>
+
+    <a href="final.html">
+  <button class="cta-btn">Explore</button>
+</a>
+
+
+    <!-- Floating shapes -->
+    <div class="floating-shape" style="width:50px;height:50px;background:#6366f1;top:20%;left:10%;animation-duration:7s;"></div>
+    <div class="floating-shape" style="width:30px;height:30px;background:#ff0000;top:50%;left:70%;animation-duration:5s;"></div>
+    <div class="floating-shape" style="width:40px;height:40px;background:#4ade80;top:30%;left:50%;animation-duration:6s;"></div>
+  </section>
+  
+
+  <script>
+    const sidebar = document.getElementById("sidebar");
+    const menuBtn = document.querySelector(".menu-btn");
+    const closeBtn = document.getElementById("closeBtn");
+
+    menuBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("active"); // toggle open/close
+    });
+
+    closeBtn.addEventListener("click", () => {
+      sidebar.classList.remove("active"); // force close
+    });
+  </script>
+  
+</body>
+
+</html>

@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EasyMeds.me</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      color-scheme: light dark;
+    }
+
+    html {
+      font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, 'Apple Color Emoji',
+        'Segoe UI Emoji';
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a, #1e293b, #0a0a0a);
+      background-attachment: fixed;
+      color: white;
+      margin: 0;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Floating idle motion */
+    @keyframes float {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-6px) rotate(2deg);
+      }
+
+      100% {
+        transform: translateY(0px) rotate(0deg);
+      }
+    }
+
+    .animate-float {
+      animation: float 4s ease-in-out infinite;
+    }
+
+    /* Eye blinking */
+    @keyframes blink {
+
+      0%,
+      90%,
+      100% {
+        transform: scaleY(1);
+      }
+
+      95% {
+        transform: scaleY(0.1);
+      }
+    }
+
+    .animate-blink {
+      animation: blink 4s infinite;
+    }
+
+    /* Bounce slow */
+    @keyframes bounceSlow {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-4px);
+      }
+    }
+
+    .animate-bounce-slow {
+      animation: bounceSlow 2s infinite;
+    }
+
+    /* Glass effect */
+    .glass {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      background: rgba(122, 115, 115, 0.6);
+    }
+
+    .dark .glass {
+      background: rgba(17, 24, 39, 0.6);
+    }
+  </style>
+</head>
+
+<body
+  class="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-900 dark:to-violet-950 text-gray-800 dark:text-gray-100">
+  <div id="page-loader" class="fixed inset-0 bg-white dark:bg-gray-900 flex items-center justify-center z-[9999]">
+    <script>
+      window.addEventListener("load", () => {
+        // fade out loader
+        const loader = document.getElementById("page-loader");
+        loader.classList.add("hidden");
+
+        // fade in body
+        document.body.classList.add("loaded");
+      });
+    </script>
+
+    <div class="animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
+  </div>
+
+  <!-- Header / Navbar -->
+  <header class="sticky top-0 z-50 border-b border-gray-200/60 dark:border-gray-800/60 glass">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div>
+          <h1 class="brand-title">
+            <span class="text-2xl font-bold text-white">Easy</span><span class="text-2xl font-bold text-red-600">Meds</span>
+          </h1>
+          <p class="text-xs text-gray-500 dark:text-gray-400 -mt-0.5">Search sickness → find related medicines</p>
+        </div>
+      </div>
+      <div class="hidden md:flex items-center gap-2 text-sm">
+        <img alt="Account" title="Profile" class="w-6 h-6"
+          src="https://cdn.netmeds.tech/v2/plain-cake-860195/original/storefront/images/profileicon.svg" />
+        <button
+          class="px-3 py-1.5 rounded-xl bg-indigo-600 text-white hover:bg-indigo-500 transition focus:outline-none focus:ring-2 focus:ring-indigo-500">Sign
+          In</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="max-w-6xl mx-auto px-4 mt-6 md:mt-10">
+    <div class="grid md:grid-cols-12 gap-6">
+      <main class="md:col-span-9">
+        <div
+          class="rounded-2xl shadow-sm ring-1 ring-gray-200 dark:ring-gray-800 bg-white/90 dark:bg-gray-900/80 p-4 md:p-5 mb-6">
+          <label for="search" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Search your
+            sickness</label>
+          <div class="flex flex-col sm:flex-row items-center gap-2">
+            <input id="search" type="text" placeholder="e.g., fever, cold, headache etc " autocomplete="off"
+              class="flex-1 m-header-search-input rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-3 text-base focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+            <!-- 🎤 Mic Button -->
+            <button id="micBtn"
+              class="px-4 py-3 rounded-xl bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600 transition whitespace-nowrap">
+              🎤
+            </button>
+
+            <button id="searchBtn"
+              class="px-4 py-3 rounded-xl bg-indigo-600 text-white font-medium hover:bg-indigo-500 transition whitespace-nowrap">Search</button>
+          </div>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">Tip: Also Choose from Popular Search 🙂</p>
+        </div>
+
+        <div id="results" class="space-y-4"></div>
+      </main>
+
+      <aside class="md:col-span-3 space-y-4">
+        <div
+          class="rounded-2xl ring-1 ring-amber-200/60 dark:ring-amber-700/50 bg-amber-50/70 dark:bg-amber-900/20 p-4">
+          <div class="flex items-center gap-2 mb-1">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+              <path
+                d="M11.25 3a.75.75 0 0 1 1.5 0v.75h.75A2.25 2.25 0 0 1 15.75 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v6a2.25 2.25 0 0 1-2.25 2.25H7.5A2.25 2.25 0 0 1 5.25 15V9a2.25 2.25 0 0 1 2.25-2.25h.75V6A2.25 2.25 0 0 1 10.5 3.75h.75V3zM9 6v.75h6V6A.75.75 0 0 0 14.25 5.25h-4.5A.75.75 0 0 0 9 6z" />
+              <path d="M7.5 9.75h9v5.25a.75.75 0 0 1-.75.75h-7.5a.75.75 0 0 1-.75-.75V9.75z" />
+            </svg>
+            <h3 class="font-semibold">Important notice</h3>
+          </div>
+          <p class="text-sm leading-relaxed">Some Update are Comming Soon...</p>
+        </div>
+        <div class="rounded-2xl ring-1 ring-gray-200 dark:ring-gray-800 bg-white/90 dark:bg-gray-900/80 p-4">
+          <h3 class="font-semibold mb-2">Popular searches</h3>
+          <div id="popular" class="flex flex-wrap gap-2 text-sm"></div>
+        </div>
+      </aside>
+    </div>
+
+    <div class="mt-6 mb-6 max-w-3xl mx-auto">
+      <div
+        class="rounded-2xl bg-white/90 dark:bg-gray-900/80 p-6 shadow-md ring-1 ring-gray-200 dark:ring-gray-700">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Upload Your Prescription</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          Please upload a valid prescription (JPG, PNG, or PDF).
+        </p>
+
+        <form id="prescriptionForm" class="space-y-4">
+          <!-- Drag & Drop Upload -->
+          <label for="fileUpload"
+            class="flex flex-col items-center justify-center border-2 border-dashed border-red-500 rounded-xl p-8 cursor-pointer text-center hover:bg-red-50 dark:hover:bg-red-900/20 transition">
+            <span class="text-lg">📄 Drag & Drop or <span class="text-red-500 font-semibold">Click</span> to Upload</span>
+            <input type="file" id="fileUpload" accept=".jpg,.jpeg,.png,.pdf" hidden />
+          </label>
+
+          <!-- Submit Button -->
+          <button type="submit"
+            class="w-full px-4 py-3 rounded-xl bg-red-600 text-white font-medium hover:bg-red-500 transition">Submit
+            Prescription</button>
+        </form>
+
+        <div id="fileName" class="mt-2 text-sm text-gray-600 dark:text-gray-300"></div>
+      </div>
+    </div>
+    <div class="mt-6 mb-6 max-w-3xl mx-auto">
+      <div class="rounded-2xl bg-white/90 dark:bg-gray-900/80 p-6 shadow-md ring-1 ring-gray-200 dark:ring-gray-700">
+        <h2 class="text-xl font-semibold mb-2 text-gray-800 dark:text-gray-100">Find Hospitals in Vadodara</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4">
+          Enter your pincode to see nearby hospitals in Vadodara.
+        </p>
+        <div class="flex gap-2 mb-4">
+          <input id="pincodeInput" type="text" placeholder="Enter Pincode (e.g., 390001)" 
+                 class="flex-1 rounded-xl border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <button id="pincodeBtn" 
+                  class="px-4 py-2 rounded-xl bg-red-600 text-white hover:bg-red-500 transition">
+            Search
+          </button>
+        </div>
+        <div id="hospitalResults" class="space-y-4"></div>
+      </div>
+    </div>
+
+  </section>
+
+  <footer class="max-w-6xl mx-auto px-4 py-10 text-xs text-gray-500 dark:text-gray-400">
+    <div class="flex flex-col items-center gap-2 text-center">
+      <p>©️ <span id="year"></span> EasyMeds·</p>
+      <p>Educational use only. Not a substitute for professional medical advice.</p>
+
+     
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="w-5 h-5 fill-current">
+            <path
+              d="M12 .5a12 12 0 0 0-3.79 23.4c.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.55-1.38-1.34-1.75-1.34-1.75-1.09-.75.08-.74.08-.74 1.2.08 1.83 1.24 1.83 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.78.42-1.3.76-1.6-2.66-.3-5.46-1.33-5.46-5.92 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.23a11.45 11.45 0 0 1 6 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.65.24 2.87.12 3.17.77.84 1.24 1.91 1.24 3.22 0 4.6-2.8 5.61-5.47 5.9.43.37.81 1.1.81 2.22v3.29c0 .32.21.7.82.58A12 12 0 0 0 12 .5z" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const illnesses = [
+      {
+        id: 'fever',
+        names: ['fever', 'pyrexia', 'बुखार'],
+        symptoms: ['High temperature', 'Chills', 'Body ache'],
+        medicines: [
+          { name: 'Paracetamol (Acetaminophen) 500 mg', form: 'Tablet', dose: '1 tab every 6–8 hrs if needed (max 3 g/day adults)', notes: 'Avoid with liver disease. Keep hydrated.' },
+          { name: 'Ibuprofen 200–400 mg', form: 'Tablet', dose: 'Every 6–8 hrs with food', otc: true, notes: 'Avoid in ulcer/kidney disease. Not in late pregnancy.' }
+        ]
+      },
+      {
+        id: 'cold',
+        names: ['common cold', 'cold', 'ज़ुकाम', 'runny nose'],
+        symptoms: ['Sneezing', 'Runny/blocked nose', 'Mild fever'],
+        medicines: [
+          { name: 'Cetirizine 10 mg', form: 'Tablet', dose: 'Once daily at night', otc: true, notes: 'May cause drowsiness.' },
+          { name: 'Paracetamol 500 mg', form: 'Tablet', dose: 'If fever/body ache', otc: true, notes: '' },
+          { name: 'Saline Nasal Spray', form: 'Spray', dose: '2–3 sprays each nostril, 3–4×/day', otc: true, notes: 'Safe for most people.' }
+        ]
+      },
+      {
+        id: 'headache',
+        names: ['headache', 'सरदर्द', 'migraine'],
+        symptoms: ['Pain in head', 'Sensitivity to light'],
+        medicines: [
+          { name: 'Paracetamol 500 mg', form: 'Tablet', dose: '1 tab every 6–8 hrs if needed', otc: true, notes: '' },
+          { name: 'Ibuprofen 200–400 mg', form: 'Tablet', dose: 'Every 6–8 hrs with food', otc: true, notes: 'Avoid with ulcer/kidney disease.' }
+        ]
+      },
+      {
+        id: 'cough',
+        names: ['cough', 'खांसी'],
+        symptoms: ['Dry or wet cough'],
+        medicines: [
+          { name: 'Dextromethorphan 10–20 mg', form: 'Syrup/Tablet', dose: 'Every 4–6 hrs (dry cough)', otc: true, notes: 'Avoid if on MAOIs. Can cause drowsiness.' },
+          { name: 'Guaifenesin 200 mg', form: 'Syrup/Tablet', dose: 'Every 4–6 hrs (wet cough)', otc: true, notes: 'Drink water to help mucus clear.' }
+        ]
+      },
+      {
+        id: 'acidity',
+        names: ['acidity', 'heartburn', 'gastric burning', 'जलन', 'acid reflux'],
+        symptoms: ['Burning chest', 'Sour burps'],
+        medicines: [
+          { name: 'Antacid Gel (Aluminium + Magnesium + Simethicone)', form: 'Syrup', dose: '1–2 tsp after meals/bedtime', otc: true, notes: '' },
+          { name: 'Famotidine 20 mg', form: 'Tablet', dose: 'Once or twice daily', otc: true, notes: 'H2 blocker.' }
+        ]
+      },
+      {
+        id: 'diarrhea',
+        names: ['diarrhea', 'loose motion', 'दस्त'],
+        symptoms: ['Loose stools', 'Cramps'],
+        medicines: [
+          { name: 'ORS (Oral Rehydration Salts)', form: 'Solution', dose: 'As per packet; frequent sips', otc: true, notes: 'Most important—prevent dehydration.' },
+          { name: 'Zinc 20 mg', form: 'Tablet', dose: 'Once daily for 10–14 days (adults)', otc: true, notes: 'Especially useful with infection.' },
+          { name: 'Loperamide 2 mg', form: 'Capsule', dose: 'After each loose stool (max 8 mg/day)', otc: true, notes: 'Avoid with high fever/bloody stools.' }
+        ]
+      },
+      {
+        id: 'constipation',
+        names: ['constipation', 'कब्ज'],
+        symptoms: ['Hard/infrequent stools'],
+        medicines: [
+          { name: 'Isabgol (Psyllium Husk)', form: 'Powder', dose: '1–2 tsp with water at night', otc: true, notes: 'Increase fluids.' },
+          { name: 'Polyethylene Glycol (PEG) 17 g', form: 'Powder', dose: 'Once daily in water', otc: true, notes: '' }
+        ]
+      },
+      {
+        id: 'allergy',
+        names: ['allergy', 'hives', 'itching', 'एलर्जी'],
+        symptoms: ['Sneezing', 'Itching', 'Rash'],
+        medicines: [
+          { name: 'Cetirizine 10 mg', form: 'Tablet', dose: 'Once daily', otc: true, notes: 'Drowsy in some people.' },
+          { name: 'Levocetirizine 5 mg', form: 'Tablet', dose: 'Once daily', otc: true, notes: 'Less sedating.' }
+        ]
+      },
+      {
+        id: 'sore-throat',
+        names: ['sore throat', 'गले में दर्द', 'pharyngitis'],
+        symptoms: ['Throat pain', 'Difficulty swallowing'],
+        medicines: [
+          { name: 'Salt Water Gargle', form: 'Home remedy', dose: '3–4×/day', otc: true, notes: '1/2 tsp salt in warm water.' },
+          { name: 'Benzydamine/Chlorhexidine Gargle', form: 'Gargle', dose: 'As directed on label', otc: true, notes: '' },
+          { name: 'Paracetamol 500 mg', form: 'Tablet', dose: 'If pain/fever', otc: true, notes: '' }
+        ]
+      },
+      {
+        id: 'nausea',
+        names: ['nausea', ' उल्टी जैसा लगना'],
+        symptoms: ['Nausea', 'Vomiting'],
+        medicines: [
+          { name: 'ORS', form: 'Solution', dose: 'Small sips frequently', otc: true, notes: 'Prevent dehydration.' },
+          { name: 'Domperidone 10 mg', form: 'Tablet', dose: 'Before food, up to 3×/day', otc: true, notes: 'Avoid in certain heart conditions.' }
+        ]
+      },
+      {
+        id: 'period-pain',
+        names: ['period pain', 'dysmenorrhea', 'mensuration pain', 'cramps'],
+        symptoms: ['Lower abdominal cramps'],
+        medicines: [
+          { name: 'Mefenamic Acid 250–500 mg', form: 'Tablet', dose: 'Every 8 hrs with food', otc: true, notes: 'Avoid with ulcers/kidney disease.' },
+          { name: 'Heating pad', form: 'Non‑drug', dose: 'As needed', otc: true, notes: '' }
+        ]
+      },
+      {
+        id: 'acne',
+        names: ['acne', 'pimples', 'मुहांसे'],
+        symptoms: ['Acne pimples'],
+        medicines: [
+          { name: 'Benzoyl Peroxide 2.5–5% gel', form: 'Topical', dose: 'Once daily thin layer', otc: true, notes: 'May cause dryness/irritation initially.' },
+          { name: 'Clindamycin + Nicotinamide gel', form: 'Topical', dose: 'Once or twice daily (OTC in some regions)', otc: true, notes: 'Check local regulations.' }
+        ]
+      },
+      {
+        id: 'body-pain',
+        names: ['body pain', 'muscle pain', 'पीठ दर्द', 'myalgia'],
+        symptoms: ['Muscle aches'],
+        medicines: [
+          { name: 'Paracetamol 500 mg', form: 'Tablet', dose: 'Every 6–8 hrs if needed', otc: true, notes: '' },
+          { name: 'Diclofenac Gel 1%', form: 'Topical', dose: 'Apply thin layer 3–4×/day', otc: true, notes: 'Avoid on broken skin.' }
+        ]
+      }
+    ];
+
+    const hospitals = [
+      {
+        name: "Sterling Hospital",
+        address: "Race Course, Vadodara",
+        map: "https://www.google.com/maps/dir/?api=1&destination=Sterling+Hospital+Vadodara"
+      },
+      {
+        name: "Bhailal Amin General Hospital",
+        address: "Gorwa, Vadodara",
+        map: "https://www.google.com/maps/dir/?api=1&destination=Bhailal+Amin+General+Hospital+Vadodara"
+      },
+      {
+        name: "Parul Sevashram Hospital",
+        address: "Limda, Vadodara",
+        map: "https://www.google.com/maps/dir/?api=1&destination=Parul+Sevashram+Hospital+Vadodara"
+      },
+      {
+        name: "Sunshine Global Hospital",
+        address: "Akota, Vadodara",
+        map: "https://www.google.com/maps/dir/?api=1&destination=Sunshine+Global+Hospital+Vadodara"
+      }
+    ];
+
+    const popularSeeds = ['fever', 'cold', 'headache', 'cough', 'acidity', 'diarrhea', 'constipation', 'allergy', 'sore throat', 'period pain', 'acne'];
+
+    const $ = (sel) => document.querySelector(sel);
+    const resultsEl = $('#results');
+    let selectedLanguage = null;
+
+    const normalize = (s) => (s || '')
+      .toString()
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/\p{Diacritic}/gu, '')
+      .replace(/[^a-z0-9\s]/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    function searchIllness(q) {
+      const nq = normalize(q);
+      if (!nq) return [];
+      return illnesses
+        .map(item => {
+          const hay = [item.id, ...item.names].map(normalize).join(' | ');
+
+          const tokensQ = nq.split(' ');
+          const matchContains = hay.includes(nq);
+          const overlap = tokensQ.filter(t => hay.includes(t)).length / Math.max(tokensQ.length, 1);
+          const score = (matchContains ? 1 : 0) + overlap;
+          return { item, score };
+        })
+        .filter(x => x.score > 0)
+        .sort((a, b) => b.score - a.score)
+        .map(x => x.item);
+    }
+
+    function pill(text) {
+      return `<span class="inline-flex items-center px-2 py-1 rounded-full text-xs ring-1 ring-gray-200 dark:ring-gray-700">${text}</span>`;
+    }
+
+    function renderResultCard(entry, index) {
+      const tags = entry.names.slice(0, 4).map(pill).join(' ');
+      const meds = entry.medicines.map(m => `
+        <li class="grid md:grid-cols-12 gap-2 md:gap-4 py-3">
+          <div class="md:col-span-7">
+            <p class="font-medium">${m.name}</p>
+            <p class="text-xs text-gray-500">${m.form}</p>
+          </div>
+          <div class="md:col-span-3 text-sm">${m.dose || ''}</div>
+          <div class="md:col-span-2 text-xs text-gray-500">
+            ${m.notes || ''}
+            <br>
+            <a href="https://www.1mg.com/search/all?name=${encodeURIComponent(m.name)}" target="_blank" 
+               class="text-indigo-600 dark:text-indigo-400 underline hover:text-indigo-800">
+               Buy
+            </a>
+          </div>
+        </li>
+      `).join('');
+
+      return `
+        <article class="result-card rounded-2xl bg-white/90 dark:bg-gray-900/80 ring-1 ring-gray-200 dark:ring-gray-800 shadow-sm"
+          style="animation-delay: ${index * 0.15}s">
+          <div class="p-4 md:p-5">
+            <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+              <h3 class="text-lg md:text-xl font-semibold">
+                ${entry.names[0][0].toUpperCase() + entry.names[0].slice(1)}
+              </h3>
+              <div class="hidden md:block">${tags}</div>
+            </div>
+            <p class="mt-1 text-sm text-gray-600 dark:text-gray-300">
+              Common symptoms: ${entry.symptoms.join(', ')}
+            </p>
+            <ul class="mt-4 divide-y divide-gray-200/70 dark:divide-gray-800/70">${meds}</ul>
+            <div class="mt-4 text-xs text-gray-500">
+              The contents of this website are for informational purposes only and not intended to be a substitute for professional medical advice.
+            </div>
+          </div>
+        </article>  
+      `;
+    }
+
+    function renderNoResults(q) {
+      return `
+          <div class="rounded-2xl border border-dashed border-gray-300 dark:border-gray-700 p-6 text-center">
+            <p class="font-medium">No results for “${q}”.</p>
+            <p class="text-sm mt-1 text-gray-500">Try common terms like <em>fever</em>, <em>cold</em>, <em>headache</em>, or Hindi words like <em>bukhar</em>, <em>sardi</em>, <em>sar dard</em>.</p>
+          </div>
+        `;
+    }
+
+    function updateResults(q) {
+      const list = searchIllness(q);
+      if (!q || list.length === 0) {
+        resultsEl.innerHTML = q ? renderNoResults(q) : '';
+        return;
+      }
+
+      resultsEl.innerHTML = list.map((item, i) => renderResultCard(item, i)).join('');
+    }
+
+    const popularEl = document.getElementById('popular');
+    popularSeeds.forEach(s => {
+      const btn = document.createElement('button');
+      btn.className = 'px-3 py-1.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 ring-1 ring-indigo-200/60 dark:ring-indigo-800 text-indigo-700 dark:text-indigo-300 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition';
+      btn.textContent = s;
+      btn.addEventListener('click', () => {
+        document.getElementById('search').value = s;
+        updateResults(s);
+        document.getElementById('search').focus();
+      });
+      popularEl.appendChild(btn);
+    });
+
+    const input = document.getElementById('search');
+    const btn = document.getElementById('searchBtn');
+
+    input.addEventListener('input', (e) => updateResults(e.target.value));
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') updateResults(input.value);
+    });
+    btn.addEventListener('click', () => updateResults(input.value));
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const params = new URLSearchParams(location.search);
+    if (params.get('q')) {
+      input.value = params.get('q');
+      updateResults(input.value);
+    }
+
+    function renderHospitalCard(h) {
+      return `
+        <div class="rounded-xl bg-white/90 dark:bg-gray-800 p-4 ring-1 ring-gray-200 dark:ring-gray-700">
+          <h3 class="text-lg font-semibold text-indigo-600">${h.name}</h3>
+          <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">${h.address}</p>
+          <a href="${h.map}" target="_blank" 
+             class="inline-block px-3 py-2 text-sm bg-red-600 text-white rounded-lg hover:bg-red-500">
+             Get Directions
+          </a>
+        </div>
+      `;
+    }
+    document.getElementById("pincodeBtn").addEventListener("click", () => {
+      const container = document.getElementById("hospitalResults");
+      container.innerHTML = hospitals.map(renderHospitalCard).join("");
+    });
+
+    /* -------------- VOICE RECOGNITION FOR MIC BUTTON -------------- */
+    const micBtn = document.getElementById('micBtn');
+
+    // Check for SpeechRecognition API support
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      micBtn.disabled = true;
+      micBtn.title = "Voice recognition not supported in this browser.";
+    } else {
+      const recognition = new SpeechRecognition();
+      recognition.lang = 'en-IN'; // Change language if needed
+      recognition.interimResults = false; // Only final results
+
+      let isListening = false;
+
+      micBtn.addEventListener('click', () => {
+        if (isListening) {
+          recognition.stop();
+          return;
+        }
+        recognition.start();
+      });
+
+      recognition.addEventListener('start', () => {
+        isListening = true;
+        micBtn.textContent = "🎙️ Listening...";
+        micBtn.classList.add("bg-indigo-600", "text-white");
+        micBtn.classList.remove("bg-gray-200", "text-gray-700");
+      });
+
+      recognition.addEventListener('end', () => {
+        isListening = false;
+        micBtn.textContent = "🎤";
+        micBtn.classList.remove("bg-indigo-600", "text-white");
+        micBtn.classList.add("bg-gray-200", "text-gray-700");
+      });
+
+      recognition.addEventListener('result', (event) => {
+        const transcript = event.results[0][0].transcript.trim();
+        input.value = transcript;
+        updateResults(transcript);
+      });
+
+      recognition.addEventListener('error', (event) => {
+        isListening = false;
+        micBtn.textContent = "🎤";
+        micBtn.classList.remove("bg-indigo-600", "text-white");
+        micBtn.classList.add("bg-gray-200", "text-gray-700");
+        alert('Error occurred in recognition: ' + event.error);
+      });
+    }
+  </script>
+</body>
+
+</html>
